@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:textSize="25dp"
         android:textStyle="bold"
-        android:text=" Computer Languages..." />
+        android:text="Songs" />
 
     <ListView
         android:id="@+id/listView"
