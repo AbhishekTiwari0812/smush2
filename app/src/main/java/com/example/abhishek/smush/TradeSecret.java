@@ -9,12 +9,14 @@ import java.util.Set;
  * Created by aviji on 6/2/2016.
  */
 public class TradeSecret {
-    static final String trade_secret_pref_file = "trade_secret_pref";
+    static final String TRADE_SECRET_PREF_FILE = "trade_secret_pref";
+    static final Integer DEFAULT_PRIORITY = 5000;
+
     public static void update_priority(Long song_id,Double time_played) {
         Long timestamp = System.currentTimeMillis()/1000L;
         Integer current_time_slot = (int)((timestamp%604800L)/14400L);
         Song song = FirstPage.SONGS_IN_PHONE.get(song_id);
-        Integer current_priority = song.trade_secret[current_time_slot];
+        Integer current_priority = get_or_update_priority(song_id,current_time_slot);
         Integer new_priority = current_priority + (int)(time_played-0.5)*100;
         if (new_priority < 1) {
             new_priority = 1;
@@ -23,7 +25,7 @@ public class TradeSecret {
             new_priority = 10000;
         }
         song.trade_secret[current_time_slot] = new_priority;
-        SharedPreferences pref_file = SongPage.context.getSharedPreferences(trade_secret_pref_file, Context.MODE_PRIVATE);
+        SharedPreferences pref_file = SongPage.context.getSharedPreferences(TRADE_SECRET_PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor pref_file_editor = pref_file.edit();
         pref_file_editor.putInt(song_id.toString()+" "+current_time_slot.toString(),new_priority);
         pref_file_editor.commit();
@@ -59,5 +61,22 @@ public class TradeSecret {
         }
 
         return 0;
+    }
+
+    private static int get_or_update_priority(Long song_id, Integer current_time_slot) {
+        if (FirstPage.SONGS_IN_PHONE.get(song_id).trade_secret == null) {
+            FirstPage.SONGS_IN_PHONE.get(song_id).trade_secret = new int[42];
+            SharedPreferences pref_file = SongPage.context.getSharedPreferences(TRADE_SECRET_PREF_FILE, Context.MODE_PRIVATE);
+            for (Integer i = 0; i < 42; i++) {
+                Integer priority = pref_file.getInt(song_id.toString()+" "+i.toString(),DEFAULT_PRIORITY);
+                if (priority == DEFAULT_PRIORITY) {
+                    SharedPreferences.Editor pref_file_editor = pref_file.edit();
+                    pref_file_editor.putInt(song_id.toString()+" "+i.toString(),DEFAULT_PRIORITY);
+                    pref_file_editor.commit();
+                }
+                FirstPage.SONGS_IN_PHONE.get(song_id).trade_secret[i] = priority;
+            }
+        }
+        return FirstPage.SONGS_IN_PHONE.get(song_id).trade_secret[current_time_slot];
     }
 }
