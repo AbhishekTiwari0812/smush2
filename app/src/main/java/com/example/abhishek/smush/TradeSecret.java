@@ -15,20 +15,23 @@ public class TradeSecret {
     public static void update_priority(Long song_id,Double time_played) {
         Long timestamp = System.currentTimeMillis()/1000L;
         Integer current_time_slot = (int)((timestamp%604800L)/14400L);
-        Song song = SongPlayerService.SONGS_IN_PHONE.get(song_id);
         Integer current_priority = get_or_update_priority(song_id,current_time_slot);
-        Integer new_priority = current_priority + (int)(time_played-0.5)*100;
+        Integer new_priority = get_new_priority(current_priority,time_played);
         if (new_priority < 1) {
             new_priority = 1;
         }
         else if (new_priority > 10000) {
             new_priority = 10000;
         }
-        song.trade_secret[current_time_slot] = new_priority;
-        SharedPreferences pref_file = SongPlayerService.CONTEXT.getSharedPreferences(TRADE_SECRET_PREF_FILE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor pref_file_editor = pref_file.edit();
-        pref_file_editor.putInt(song_id.toString()+" "+current_time_slot.toString(),new_priority);
-        pref_file_editor.commit();
+        update_stored_priority(song_id, current_time_slot, new_priority);
+        for (Long song_id_iter :
+                SongPlayerService.SONGS_IN_PHONE.keySet()) {
+            for (int i = 0; i < 42; i++) {
+                Integer current_pty = get_or_update_priority(song_id_iter,i);
+                Integer new_pty = current_pty+(int)Math.pow((4-(current_pty/1250)),3);
+                update_stored_priority(song_id_iter,i,new_pty);
+            }
+        }
     }
 
     public static long get_next_song_id() {
@@ -78,5 +81,40 @@ public class TradeSecret {
             }
         }
         return SongPlayerService.SONGS_IN_PHONE.get(song_id).trade_secret[current_time_slot];
+    }
+
+    private static int get_new_priority(Integer current_priority,Double time_played) {
+        if (time_played < 10) {
+            return (int)(current_priority*0.60);
+        }
+        else if (time_played < 30) {
+            return (int)(current_priority*0.65);
+        }
+        else if (time_played < 40) {
+            return (int)(current_priority*0.75);
+        }
+        else if (time_played < 50) {
+            return (int)(current_priority*0.80);
+        }
+        else if (time_played < 60) {
+            return (int)(current_priority*0.90);
+        }
+        else if (time_played < 80) {
+            return (int)(current_priority*1.00);
+        }
+        else if (time_played < 90) {
+            return (int)(current_priority*1.10);
+        }
+        else {
+            return (int)(current_priority*1.25);
+        }
+    }
+
+    private static void update_stored_priority(Long song_id, Integer current_time_slot, Integer new_priority) {
+        SongPlayerService.SONGS_IN_PHONE.get(song_id).trade_secret[current_time_slot] = new_priority;
+        SharedPreferences pref_file = SongPlayerService.CONTEXT.getSharedPreferences(TRADE_SECRET_PREF_FILE, Context.MODE_PRIVATE);
+        SharedPreferences.Editor pref_file_editor = pref_file.edit();
+        pref_file_editor.putInt(song_id.toString()+" "+current_time_slot.toString(),new_priority);
+        pref_file_editor.commit();
     }
 }
