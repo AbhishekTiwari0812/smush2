@@ -1,58 +1,95 @@
 package com.example.abhishek.smush;
 
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
 
 /**
  * Edited by protino
  */
+
+
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.provider.MediaStore;
+import java.util.* ;
+import java.io.*;
+import android.util.*;
+import android.os.*;
+
+
 public class SongList extends AsyncTask<Void,Void,Void> {
 
+    private List<String> mediaList = new ArrayList<String>();
+    private String[] STAR = { "*" };
+
     @Override
-    protected Void doInBackground(Void... params) {
+	protected Void doInBackground(Void... params) {
+        listAllSongs();
         return null;
     }
 
+    // FIXME
+    //Nothing at present but progress bar can be established here...
     @Override
-    protected void onPreExecute( ) {
-
+	protected void onPreExecute( ) {
+        super.onPreExecute( );
     }
 
+    //Display when completed scanning the entire disk
     @Override
-    protected void onPostExecute(Void aVoid) {
+	protected void onPostExecute(Void aVoid) {
+        //showDialog( "Completed Scanning" );
         super.onPostExecute(aVoid);
     }
 
-    /*protected void listAllSongs( ){
-        Cursor cursor;
-        Uri allsongsuri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+    //Called to update the progress bar accordingly
+    //@Override
+    protected void onProgressUpdate(Integer... progress) {
+        //setProgressPercent(progress[0]);
+    }
 
-        if (isSdPresent()) {
-            cursor = getContentResolver().query(allsongsuri, STAR, selection, null, null);
+    //To be called from the doInBackground function
+    protected void listAllSongs( ){
 
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    do {
-                        String songname = cursor
-                                .getString(cursor
-                                        .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-                        int song_id = cursor.getInt(cursor
-                                .getColumnIndex(MediaStore.Audio.Media._ID));
+        String externalStoragePath = Environment.getExternalStorageDirectory()
+	    .getAbsolutePath();
+        File targetDir = new File(externalStoragePath);
+        File[] mediaFiles = targetDir.listFiles();
+        scanFiles( mediaFiles );
+    }
 
-                        String fullpath = cursor.getString(cursor
-                                .getColumnIndex(MediaStore.Audio.Media.DATA));
-
-                        String albumname = cursor.getString(cursor
-                                .getColumnIndex(MediaStore.Audio.Media.ALBUM));
-
-                    } while (cursor.moveToNext());
+    // Recursively scan all files and directories
+    public void scanFiles(File[] scanFiles) {
+        if (scanFiles != null) {
+            for (File file : scanFiles) {
+                if(mediaList.size() > 4){
+                    Log.d("Not a valid Dir",file.getAbsolutePath());
+                    return;
                 }
-                cursor.close();
+                if (file.isDirectory()) {
+		    Log.d(" scaned Directory ", file.getAbsolutePath());
+                    scanFiles(file.listFiles());
+
+                } else {
+                    addToMediaList(file);
+                }
+            }
+        } else {
+
+        }
+    }
+
+    //once scanned add to media list the found music file
+    private void addToMediaList(File file) {
+        if (file != null) {
+            String path = file.getAbsolutePath();
+            int index = path.lastIndexOf(".");
+            String extn = path.substring(index + 1, path.length());
+            if (extn.equalsIgnoreCase("mp4") || extn.equalsIgnoreCase("mp3")) {// ||
+                Log.d(" scanned File ::: ", file.getAbsolutePath()
+		      + "  file.getPath( )  " + file.getPath());// extn.equalsIgnoreCase("mp3"))
+                mediaList.add(path);
             }
         }
-    }*/
+    }
 
 }
