@@ -1,5 +1,6 @@
 package com.example.abhishek.smush;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,11 +21,13 @@ public class SongPage extends AppCompatActivity {
     TextView tv_stop_current_song;
     long current_song_id;
     Stack<Long> previous_song_list;
+    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_player_layout);
+        context = this;
         //initializing the page
         tv_previous_song = (TextView) findViewById(R.id.tv_previous_song);
         tv_next_song = (TextView) findViewById(R.id.tv_next_song);
@@ -69,7 +72,8 @@ public class SongPage extends AppCompatActivity {
         //TODO: if song is complete, play the next song and send the feedback
 
     }
-    void notify_trade_secret(Long id,Double time_percentage){
+
+    void notify_trade_secret(Long id, Double time_percentage) {
 
     }
 }
