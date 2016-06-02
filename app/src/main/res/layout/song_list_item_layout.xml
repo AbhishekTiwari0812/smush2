@@ -9,6 +9,7 @@
         android:layout_gravity="center"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:src="@drawable/bb"
         />
         <!--android:src="@drawable/ic_launcher" />-->
 

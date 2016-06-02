@@ -13,14 +13,14 @@ public class Song {
 
     public long id;
     public String name;
-    public double time_duration;
+    public int time_duration;
     public String artist_name;
     public String full_path;
     public int[ ]  trade_secret;
 
     public Song( long id,
                  String name,
-                 double time_duration,
+                 int time_duration,
                  String artist_name,
                  String full_path,
                  int[] trade_secret) {
