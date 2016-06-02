@@ -29,7 +29,7 @@
         <TextView
             android:id="@+id/tv_previous_song"
             style="@style/song_player_buttons"
-            android:text=" <=" />
+            android:text="prev" />
 
         <TextView
             android:id="@+id/tv_stop_song"
@@ -39,7 +39,7 @@
         <TextView
             android:id="@+id/tv_next_song"
             style="@style/song_player_buttons"
-            android:text="=>" />
+            android:text="next" />
     </LinearLayout>
 
     <ProgressBar

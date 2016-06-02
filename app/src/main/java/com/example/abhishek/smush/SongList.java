@@ -25,7 +25,7 @@ public class SongList extends AsyncTask<Void,Void,Void> {
         super.onPostExecute(aVoid);
     }
 
-    protected void listAllSongs( ){
+    /*protected void listAllSongs( ){
         Cursor cursor;
         Uri allsongsuri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
@@ -53,6 +53,6 @@ public class SongList extends AsyncTask<Void,Void,Void> {
                 cursor.close();
             }
         }
-    }
+    }*/
 
 }
