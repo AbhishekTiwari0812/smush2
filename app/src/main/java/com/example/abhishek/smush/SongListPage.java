@@ -20,10 +20,7 @@ public class SongListPage  extends  AppCompatActivity {
     Context context;
     private static final String TAG = "Laststnd";
 
-    Map<Long, Song> SONGS_IN_PHONE;
-    ArrayList songName;
-    public static int [] songImages={};
-    public static String [] songNameList={};
+    Map<String, Song> SONGS_IN_PHONE;
 
 
     @Override
@@ -31,6 +28,7 @@ public class SongListPage  extends  AppCompatActivity {
         super.onCreate(savedInstanceState);
         // sets the layout for this Activity
         setContentView(R.layout.song_list_page);
+        getSupportActionBar().setTitle("Songs"); // to change the Action Bar title in SongListPage Activity
 
         context = this;
 
@@ -39,17 +37,23 @@ public class SongListPage  extends  AppCompatActivity {
             Log.d(TAG,"No Songs in Phone or some error Occurred");
 
             Song tmp_song;
-            SONGS_IN_PHONE = new HashMap<Long, Song>();
+            SONGS_IN_PHONE = new HashMap<String, Song>();
 
-            tmp_song = new Song(11,"Bolna",60,"Alia Bhatt","sudoroot/1",new int[0]);
+            tmp_song = new Song("11","Bolna",60,"Alia Bhatt","sudoroot/1",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song(22,"Dolna",120,"Rohit Bhatt","sudoroot/2",new int[0]);
+            tmp_song = new Song("22","Dolna",120,"Rohit Bhatt","sudoroot/2",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song(33,"Kholna",100,"Zingya Bhatt","sudoroot/3",new int[0]);
+            tmp_song = new Song("33","Kholna",100,"Zingya Bhatt","sudoroot/3",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song(44,"Colna",65,"Darshak Bhatt","sudoroot/4",new int[0]);
+            tmp_song = new Song("44","Colna",65,"Darshak Bhatt","sudoroot/4",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song(55,"Zolna",30,"Gautam Bhatt","sudoroot/5",new int[0]);
+            tmp_song = new Song("55","Zolna",30,"Gautam Bhatt","sudoroot/5",new int[0]);
+            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+            tmp_song = new Song("66","Xolna",60,"Aliass Bhatt","sudoroot/6",new int[0]);
+            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+            tmp_song = new Song("77","Aolna",60,"Aliadas Bhatt","sudoroot/7",new int[0]);
+            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+            tmp_song = new Song("88","Holna",60,"Aliasdf Bhatt","sudoroot/8",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
 
         }

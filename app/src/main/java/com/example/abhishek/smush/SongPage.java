@@ -19,8 +19,8 @@ public class SongPage extends AppCompatActivity {
     TextView tv_next_song;
     TextView tv_current_song_name;
     TextView tv_stop_current_song;
-    long current_song_id;
-    Stack<Long> previous_song_list;
+    String current_song_id;
+    Stack<String> previous_song_list;
     static Context context;
 
     @Override
@@ -33,7 +33,7 @@ public class SongPage extends AppCompatActivity {
         tv_next_song = (TextView) findViewById(R.id.tv_next_song);
         tv_stop_current_song = (TextView) findViewById(R.id.tv_stop_song);
         tv_current_song_name = (TextView) findViewById(R.id.tv_current_song_name);
-        previous_song_list = new Stack<Long>();
+        previous_song_list = new Stack<String>();
 
 
         tv_previous_song.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ public class SongPage extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "No previous song to be played", Toast.LENGTH_LONG).show();
                 } else {
                     //get the previous song to be played
-                    Long next_song_id = previous_song_list.pop();
+                    String next_song_id = previous_song_list.pop();
                     play_song(next_song_id);
                 }
             }
@@ -52,6 +52,7 @@ public class SongPage extends AppCompatActivity {
         tv_next_song.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //remember the song id.
                 previous_song_list.push(current_song_id);
                 play_song(TradeSecret.get_next_song_id());
             }
@@ -64,8 +65,8 @@ public class SongPage extends AppCompatActivity {
         });
     }
 
-    void play_song(long next_song_id) {
-        Song song = FirstPage.SONGS_IN_PHONE.get(next_song_id);
+    void play_song(String next_song_id) {
+        Song song = SongPlayerService.SONGS_IN_PHONE.get(next_song_id);
         current_song_id = next_song_id;
         //TODO: add method to play next song.
 
@@ -73,7 +74,8 @@ public class SongPage extends AppCompatActivity {
 
     }
 
-    void notify_trade_secret(Long id, Double time_percentage) {
+    void notify_trade_secret(Long id) {
+        //TODO: notify the trade secret values
 
     }
 }

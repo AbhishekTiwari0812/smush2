@@ -1,5 +1,6 @@
 package com.example.abhishek.smush;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.content.Context;
@@ -12,7 +13,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 /**
  * Created by Abhishek on 02-06-2016.
@@ -24,17 +27,18 @@ public class CustomAdapter extends BaseAdapter{
 //    String [] result;
     Context context;
 //    int [] imageId;
-    Map<Long, Song> Songs_In_Phone;
-    List<Long> keys; // stores keys (names of songs) to return the position for custom adapter
+    Map<String, Song> Songs_In_Phone;
+    List<String> keys; // stores keys (names of songs) to return the position for custom adapter
 
     private static LayoutInflater inflater=null;
-    public CustomAdapter(SongListPage mainActivity, Map<Long, Song> SONGS_IN_PHONE) {
+    public CustomAdapter(SongListPage mainActivity, Map<String, Song> SONGS_IN_PHONE) {
         // TODO Auto-generated constructor stub
 //        result=songNameList;
         context=mainActivity;
 //        imageId=songImages;
         Songs_In_Phone = SONGS_IN_PHONE;
-        keys = new ArrayList<Long>(Songs_In_Phone.keySet());
+         keys = getSongList(Songs_In_Phone);
+//        keys = new ArrayList<String>(Songs_In_Phone.keySet());
         inflater = ( LayoutInflater )context.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -53,13 +57,34 @@ public class CustomAdapter extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         // TODO Auto-generated method stub
-        return keys.get(position);
+        return Long.parseLong(keys.get(position));
+    }
+
+    private ArrayList<String> getSongList(Map <String,Song> Songs_In_Phone){
+        //Generates the Song List According to piority
+        ArrayList <String> _keys;
+
+        //Do your Priority Listing
+        _keys = new ArrayList<String>(Songs_In_Phone.keySet());
+        return _keys;
+    }
+
+    private String getDurationFormat(int duration){
+        // returns duration formatted to be displayed as in song list
+        // takes duration is Seconds
+        String dur= "";
+//        dur+=Integer.toString(duration%60);
+//        duration = duration/60;
+//        dur=Integer.toString(duration)+":"+dur;
+        dur = String.format(Locale.US,"%02d:%02d",duration/60,duration%60);
+
+        return dur;
     }
 
     public class Holder
     {
-        TextView tv;
-        ImageView img;
+        TextView song_name,song_artist,song_duration;
+        ImageView song_img;
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -67,23 +92,33 @@ public class CustomAdapter extends BaseAdapter{
         Holder holder=new Holder();
         View rowView;
         rowView = inflater.inflate(R.layout.song_list_item_layout, null);
-        holder.tv=(TextView) rowView.findViewById(R.id.textView1);
-        holder.img=(ImageView) rowView.findViewById(R.id.imageView1);
+        holder.song_name=(TextView) rowView.findViewById(R.id.textViewSongName);
+        holder.song_artist=(TextView) rowView.findViewById(R.id.textViewSongArtist);
+        holder.song_duration=(TextView) rowView.findViewById(R.id.textViewSongDuration);
+        holder.song_img=(ImageView) rowView.findViewById(R.id.imageViewSongImage);
 
-        Log.d(TAG,"position: "+position);
-        final String name = Songs_In_Phone.get(getItemId(position)).name;
-        holder.tv.setText(name);
-
+//        Log.d(TAG,"position: "+position);
+        final Song song = Songs_In_Phone.get(Long.toString(getItemId(position)));
+        final String name = song.name;
+        holder.song_name.setText(name);
+        holder.song_artist.setText(song.artist_name);
+        holder.song_duration.setText(getDurationFormat(song.time_duration));
+//        Log.d(TAG,"Song Duration: "+Integer.toString(song.time_duration));
         //Setting the Song Name Image
         String image_name = name.charAt(0)+""+name.charAt(0);
         image_name = image_name.toLowerCase();
-        Log.d(TAG,"Drawable Image Name = "+image_name);
-        holder.img.setImageResource(this.context.getResources().getIdentifier(image_name,"drawable",this.context.getPackageName()));
+//        Log.d(TAG,"Drawable Image Name = "+image_name);
+        holder.song_img.setImageResource(this.context.getResources().getIdentifier(image_name,"drawable",this.context.getPackageName()));
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Toast.makeText(context, "You Clicked "+name, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "You Clicked "+name, Toast.LENGTH_SHORT).show();
+
+                //Start your activity to play this song
+                Intent playSong = new Intent(context,SongPage.class);
+                playSong.putExtra("id",song.id);
+                context.startActivity(playSong);
             }
         });
         return rowView;
