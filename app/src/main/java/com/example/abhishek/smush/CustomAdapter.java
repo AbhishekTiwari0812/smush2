@@ -1,6 +1,8 @@
 package com.example.abhishek.smush;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +60,12 @@ public class CustomAdapter extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         // TODO Auto-generated method stub
-        return Long.parseLong(keys.get(position));
+        return position;
+    }
+
+    public String _getItemId(int position) {
+        // TODO Auto-generated method stub
+        return keys.get(position);
     }
 
     private ArrayList<String> getSongList(Map <String,Song> Songs_In_Phone){
@@ -72,6 +80,7 @@ public class CustomAdapter extends BaseAdapter{
     private String getDurationFormat(int duration){
         // returns duration formatted to be displayed as in song list
         // takes duration is Seconds
+        duration = duration/1000; // converting duration in seconds
         String dur= "";
 //        dur+=Integer.toString(duration%60);
 //        duration = duration/60;
@@ -98,7 +107,7 @@ public class CustomAdapter extends BaseAdapter{
         holder.song_img=(ImageView) rowView.findViewById(R.id.imageViewSongImage);
 
 //        Log.d(TAG,"position: "+position);
-        final Song song = Songs_In_Phone.get(Long.toString(getItemId(position)));
+        final Song song = Songs_In_Phone.get(_getItemId(position));
         final String name = song.name;
         holder.song_name.setText(name);
         holder.song_artist.setText(song.artist_name);
@@ -108,17 +117,37 @@ public class CustomAdapter extends BaseAdapter{
         String image_name = name.charAt(0)+""+name.charAt(0);
         image_name = image_name.toLowerCase();
 //        Log.d(TAG,"Drawable Image Name = "+image_name);
-        holder.song_img.setImageResource(this.context.getResources().getIdentifier(image_name,"drawable",this.context.getPackageName()));
+        if( (name.charAt(0)>='A' && name.charAt(0)<='Z' ) || (name.charAt(0)>='a' && name.charAt(0)<='z') )
+            holder.song_img.setImageResource(this.context.getResources().getIdentifier(image_name,"drawable",this.context.getPackageName()));
+        else
+            holder.song_img.setImageResource(R.drawable.nn);
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
+                Log.d(TAG,"You clicked a rowView");
                 Toast.makeText(context, "You Clicked "+name, Toast.LENGTH_SHORT).show();
 
                 //Start your activity to play this song
-                Intent playSong = new Intent(context,SongPage.class);
-                playSong.putExtra("id",song.id);
-                context.startActivity(playSong);
+//                Intent playSong = new Intent(context,SongPage.class);
+//                playSong.putExtra("id",song.id);
+//                context.startActivity(playSong);
+
+                //Play the song
+                try {
+                    Log.d(TAG,"TRYing to play");
+                    MediaPlayer current_song = new MediaPlayer();
+                    current_song.setDataSource(song.full_path);
+                    current_song.prepare();
+                    current_song.start();
+                    Log.d(TAG,"Play started");
+                }
+                catch (IOException e) {
+                    FirstPage._("Error while playing the song");
+                    e.printStackTrace();
+                } catch (NullPointerException e) {
+                    FirstPage._("No songs to play");
+                }
             }
         });
         return rowView;

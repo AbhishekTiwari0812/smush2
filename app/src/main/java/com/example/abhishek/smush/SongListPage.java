@@ -8,6 +8,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -31,14 +32,14 @@ public class SongListPage  extends  AppCompatActivity {
         getSupportActionBar().setTitle("Songs"); // to change the Action Bar title in SongListPage Activity
 
         context = this;
-
+        SongPlayerService.repopulate(); // fetch the song list
         if(SongPlayerService.SONGS_IN_PHONE==null)
         {
             Log.d(TAG,"No Songs in Phone or some error Occurred");
 
             Song tmp_song;
             SONGS_IN_PHONE = new HashMap<String, Song>();
-
+            //Creating temporary songs
             tmp_song = new Song("11","Bolna",60,"Alia Bhatt","sudoroot/1",new int[0]);
             SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
             tmp_song = new Song("22","Dolna",120,"Rohit Bhatt","sudoroot/2",new int[0]);
@@ -59,7 +60,7 @@ public class SongListPage  extends  AppCompatActivity {
         }
         else
         {
-            Log.d(TAG,"Yes We got some songs");
+            Log.d(TAG,String.format(Locale.US,"Yes We got %d songs",SongPlayerService.SONGS_IN_PHONE.size()));
             SONGS_IN_PHONE = SongPlayerService.SONGS_IN_PHONE;
         }
 

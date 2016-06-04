@@ -3,10 +3,12 @@ package com.example.abhishek.smush;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -20,8 +22,10 @@ public class SongPlayerService extends Service {
     static boolean FLAG_PLAY_NEXT_SONG;
     static MediaPlayer current_song;
     static String CURRENT_SONG_ID;
+    private static final String TAG = "Laststnd";
 
     static void start_playing() {
+        repopulate();
         while (true) {
             FirstPage._("Trying to play songs");
             Double percentage_played = play_next_song();
@@ -65,16 +69,6 @@ public class SongPlayerService extends Service {
             FirstPage._("No songs to play");
         }
 
-
-        //THIS GIVES THE TIME FOR WHICH THE SONG IS GOING TO BE PLAYED FOR.
-        //TODO: get this
-        /*
-        * String filePath = Environment.getExternalStorageDirectory()+"/yourfolderNAme/yopurfile.mp3";
-        *   mediaPlayer = new  MediaPlayer();
-        *   mediaPlayer.setDataSource(filePath);
-        *   mediaPlayer.prepare();
-        *   mediaPlayer.start()
-        * */
         return 0.0d;
     }
 
@@ -98,12 +92,49 @@ public class SongPlayerService extends Service {
         }
     }
 
+    static void repopulate() {
+        SharedPreferences sharedPreferences = SongPlayerService.CONTEXT.getSharedPreferences(SongList.MY_PREFERENCES, MODE_PRIVATE);
+        Map<String, String> map = (Map<String, String>) sharedPreferences.getAll();
+        SONGS_IN_PHONE.clear();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String id = entry.getKey();
+            String[] temp = splitAtDollarDelimiter(entry.getValue());
+
+            String name = temp[0];
+
+            int time_duration = 0;
+            if(temp[1]!=null)
+            {
+                time_duration=Integer.valueOf(temp[1]);
+            }
+
+            String artist_name = temp[2];
+            String full_path = temp[3];
+//            Log.d(TAG,"in Repopulate() => NAME : "+name+" :: Entry : "+entry.getValue());
+            Song song = new Song(id, name, time_duration, artist_name, full_path, null);
+            SONGS_IN_PHONE.put(id, song);
+        }
+        Log.d(TAG,"In Repopulate :: #SONGS_IN_PHONE:"+SONGS_IN_PHONE.size());
+    }
+
+    public static String[] splitAtDollarDelimiter(String string) {
+        String[] temp = string.split("\\$");
+        String[] afterSplit = new String[4];
+        for (int i = 0, j = 0; i < temp.length; i++) {
+            if (temp[i].length() > 0) {
+                afterSplit[j] = temp[i];
+                j++;
+            }
+        }
+        return afterSplit;
+    }
+
     //copy the songs from Activity to service.
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         FirstPage._("onStartCommand");
         CONTEXT = this;
-        Toast.makeText(this,"Service started",Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Service started", Toast.LENGTH_LONG).show();
         SONGS_IN_PHONE = new HashMap<String, Song>();
         if (SONGS_IN_PHONE == null)
             FirstPage._("SONGS IN PHONE ARE NULL");
@@ -114,8 +145,6 @@ public class SongPlayerService extends Service {
     public void onCreate() {
         super.onCreate();
     }
-
-
 
     @Override
     public void onDestroy() {
@@ -129,8 +158,5 @@ public class SongPlayerService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
-    }
-    static  void repopulate(){
-        
     }
 }

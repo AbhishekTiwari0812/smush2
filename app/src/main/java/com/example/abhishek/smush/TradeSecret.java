@@ -31,9 +31,22 @@ public class TradeSecret {
 
         update_stored_priority(song_id, current_time_slot, new_priority);
 
+        Set<String> song_key_set = SongPlayerService.SONGS_IN_PHONE.keySet();
+
+        // Waiting till SONGS_IN_PHONE is not empty
+        while(song_key_set.isEmpty()) {
+            SongPlayerService.repopulate();
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            song_key_set = SongPlayerService.SONGS_IN_PHONE.keySet();
+        }
+
         // Updating priorities for all songs. Gradually moving all priorities towards 5000
         for (String song_id_iter :
-                SongPlayerService.SONGS_IN_PHONE.keySet()) {
+                song_key_set) {
             for (int i = 0; i < 42; i++) {
                 Integer current_pty = get_or_update_priority(song_id_iter, i);
                 Integer new_pty = current_pty + (int) Math.pow((4 - (current_pty / 1250)), 3);
@@ -64,14 +77,14 @@ public class TradeSecret {
         Long total_priority = 0L;
         for (String song_key :
                 song_key_set) {
-            total_priority += SongPlayerService.SONGS_IN_PHONE.get(song_key).trade_secret[current_time_slot];
+            total_priority += get_or_update_priority(song_key,current_time_slot);
         }
 
         // Selecting a song
         Long random_selector = ((long) (Math.random() * total_priority)) + 1L;
         for (String song_key :
                 song_key_set) {
-            random_selector -= SongPlayerService.SONGS_IN_PHONE.get(song_key).trade_secret[current_time_slot];
+            random_selector -= get_or_update_priority(song_key,current_time_slot);
             if (random_selector <= 0) {
                 return song_key;
             }
@@ -86,11 +99,23 @@ public class TradeSecret {
         // If present in SharedPreferences, adds the priority to the HashMap and returns priority
         // If not present in SharedPreferences, add default priority to SharedPreferences and
         // HashMap, and returns default priority.
-        if (SongPlayerService.SONGS_IN_PHONE == null) {
+        while (SongPlayerService.SONGS_IN_PHONE == null) {
             FirstPage._("LIST NOT FILLED");
+            SongPlayerService.repopulate();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
-        if (SongPlayerService.SONGS_IN_PHONE.get(song_id) == null) {
+        while (SongPlayerService.SONGS_IN_PHONE.get(song_id) == null) {
             FirstPage._("No song found with id" + song_id);
+            SongPlayerService.repopulate();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         if (SongPlayerService.SONGS_IN_PHONE.get(song_id).trade_secret == null) {
 
@@ -138,6 +163,25 @@ public class TradeSecret {
     private static void update_stored_priority(String song_id, Integer current_time_slot, Integer new_priority) {
         // Updates new priority to SharedPreferences and HashMap
 
+        while (SongPlayerService.SONGS_IN_PHONE.get(song_id) == null) {
+            FirstPage._("No song found with id" + song_id);
+            SongPlayerService.repopulate();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        while (SongPlayerService.SONGS_IN_PHONE.get(song_id).trade_secret == null) {
+            FirstPage._("Song with id " + song_id + " does not have trade_secret");
+            SongPlayerService.repopulate();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         SongPlayerService.SONGS_IN_PHONE.get(song_id).trade_secret[current_time_slot] = new_priority;
         SharedPreferences pref_file = SongPlayerService.CONTEXT.getSharedPreferences(TRADE_SECRET_PREF_FILE, Context.MODE_PRIVATE);
         SharedPreferences.Editor pref_file_editor = pref_file.edit();
