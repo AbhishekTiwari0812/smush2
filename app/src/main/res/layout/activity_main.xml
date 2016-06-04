@@ -8,12 +8,17 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:weightSum="100"
-    tools:context="com.example.abhishek.smush.MainActivity">
+    tools:context="com.example.abhishek.smush.FirstPage">
 
     <Button
         android:id="@+id/bt_start_playing"
         style="@style/main_page_button"
         android:text="Start Playing" />
+
+    <Button
+        android:id="@+id/bt_stop_playing"
+        style="@style/main_page_button"
+        android:text="Stop Playing" />
 
     <Button
         android:id="@+id/bt_open_song_list"

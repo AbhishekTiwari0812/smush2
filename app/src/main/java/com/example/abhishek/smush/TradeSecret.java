@@ -34,7 +34,7 @@ public class TradeSecret {
         Set<String> song_key_set = SongPlayerService.SONGS_IN_PHONE.keySet();
 
         // Waiting till SONGS_IN_PHONE is not empty
-        while(song_key_set.isEmpty()) {
+        while (song_key_set.isEmpty()) {
             SongPlayerService.repopulate();
             try {
                 Thread.sleep(1000L);
@@ -77,20 +77,22 @@ public class TradeSecret {
         Long total_priority = 0L;
         for (String song_key :
                 song_key_set) {
-            total_priority += get_or_update_priority(song_key,current_time_slot);
+            total_priority += get_or_update_priority(song_key, current_time_slot);
         }
 
         // Selecting a song
-        Long random_selector = ((long) (Math.random() * total_priority)) + 1L;
+        Long random_selector = (long) (Math.ceil(Math.random() * Double.valueOf(total_priority))) + 1L;
         for (String song_key :
                 song_key_set) {
-            random_selector -= get_or_update_priority(song_key,current_time_slot);
+            random_selector -= get_or_update_priority(song_key, current_time_slot);
             if (random_selector <= 0) {
+                FirstPage._("Total priority:" + total_priority);
+                FirstPage._("Song key" + song_key);
                 return song_key;
             }
         }
-
-        // The code should never reach here
+        FirstPage._("Total priority:" + total_priority);
+        FirstPage._("Reaching here");
         return null;
     }
 

@@ -66,8 +66,8 @@ public class SongPage extends AppCompatActivity {
     }
 
     void play_song(String next_song_id) {
-        Song song = SongPlayerService.SONGS_IN_PHONE.get(next_song_id);
         current_song_id = next_song_id;
+        SongPlayerService.FLAG_PLAY_NEXT_SONG = true;
         //TODO: add method to play next song.
 
         //TODO: if song is complete, play the next song and send the feedback

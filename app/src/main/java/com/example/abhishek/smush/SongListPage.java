@@ -32,7 +32,7 @@ public class SongListPage  extends  AppCompatActivity {
         getSupportActionBar().setTitle("Songs"); // to change the Action Bar title in SongListPage Activity
 
         context = this;
-        SongPlayerService.repopulate(); // fetch the song list
+//        SongPlayerService.repopulate(); // fetch the song list
         if(SongPlayerService.SONGS_IN_PHONE==null)
         {
             Log.d(TAG,"No Songs in Phone or some error Occurred");

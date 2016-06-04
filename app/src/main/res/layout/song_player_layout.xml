@@ -3,9 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#ffffff"
-    android:gravity="center"
+    android:background="#ffffcc"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
+
     android:padding="7dp"
     android:weightSum="100">
 
@@ -22,7 +23,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20"
+        android:layout_weight="60"
+        android:background="@color/colorAccent"
+
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="21">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="SONG STATUS GOES HERE"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -46,6 +68,18 @@
         android:id="@+id/pb_song_progress_percent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="5"
-        android:background="@color/colorAccent" />
+        android:background="@color/colorPrimaryDark" />
+
+    <Button
+        android:id="@+id/priority_resetter"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="7dp"
+        android:layout_weight="10"
+        android:background="@color/colorPrimaryDark"
+        android:padding="7dp"
+        android:text="RESET PRIORITY"
+        android:textColor="#ffffff" />
 </LinearLayout>

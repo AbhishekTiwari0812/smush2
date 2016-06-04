@@ -8,17 +8,13 @@ import android.content.SharedPreferences;
 import android.media.MediaMetadataRetriever;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 public class SongList extends AsyncTask<Void,Void,Void> {
-
-    private static final String TAG = "Laststnd";
     static final String MY_PREFERENCES = "SONG_LIST";
     SharedPreferences.Editor editor;
     private ProgressDialog dialog;
@@ -29,6 +25,7 @@ public class SongList extends AsyncTask<Void,Void,Void> {
     @Override
     protected Void doInBackground(Void... params) {
         listAllSongs();
+        FirstPage._("Listing songs");
         return null;
     }
 
@@ -41,27 +38,24 @@ public class SongList extends AsyncTask<Void,Void,Void> {
 
         sharedpreferences = FirstPage.FIRST_PAGE_CONTEXT.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
-        editor.clear();
-        dialog = new ProgressDialog(FirstPage.FIRST_PAGE_CONTEXT);
+        editor.clear(); // to clear previous song list
+/*        dialog = new ProgressDialog(FirstPage.FIRST_PAGE_CONTEXT);
         dialog.setMessage("Scanning files, please wait.");
-        dialog.show();
+        dialog.show();*/
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        if (dialog.isShowing()) {
+     /*   if (dialog.isShowing()) {
             dialog.dismiss();
-        }
-
-        Log.d(TAG,"Dialog Dismissed");
+        }*/
         editor.commit();
     }
 
     protected void listAllSongs() {
         String externalStoragePath = Environment.getExternalStorageDirectory()
                 .getAbsolutePath();
-        Log.d(TAG,"Internal Memeory Path: "+externalStoragePath);
         listAllCards(new File(externalStoragePath));
         if (new File("/storage/extSdCard/").exists()) {
             listAllCards(new File("/storage/extSdCard/"));
@@ -79,7 +73,6 @@ public class SongList extends AsyncTask<Void,Void,Void> {
     }
 
     public void listAllCards(File base) {
-        Log.d(TAG,"in ListAllCards: base:"+base.getPath());
         File[] mediaFiles = base.listFiles();
         scanFiles(mediaFiles);
 
@@ -91,6 +84,7 @@ public class SongList extends AsyncTask<Void,Void,Void> {
                     return;
                 }
                 if (file.isDirectory() && file.getName().charAt(0)!='.') {
+                    // avoid hidden directory :)
                     scanFiles(file.listFiles());
                 } else {
                     addToMediaList(file);
@@ -102,23 +96,23 @@ public class SongList extends AsyncTask<Void,Void,Void> {
     private void addToMediaList(File file) {
         if (file != null) {
             String path = file.getAbsolutePath();
-
             int index = path.lastIndexOf(".");
             String extn = path.substring(index + 1, path.length());
-            if (extn.equalsIgnoreCase("mp3")) {// ||
-//                Log.d(TAG,"PATH: "+path);
+            if ( extn.equalsIgnoreCase("mp3")) {// ||
                 metaRetriver = new MediaMetadataRetriever();
                 metaRetriver.setDataSource(path);
                 String name = "Unknown";
-                String full_path = null;
                 String artist_name = "No Artist";
                 int duration = 0;
                 try {
-                    full_path = path;
 //                    name = metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_TITLE);
                     name = file.getName();
                     artist_name = metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_ARTIST);
-                    duration = Integer.valueOf(metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION));
+                    try {
+                        duration = Integer.valueOf(metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION));
+                    }catch (NumberFormatException e){
+                        duration=0;
+                    }
                 } finally {
                     if (duration > 6000) {              // Threshold time for a song must be > 1 minutes
                         add_song_in_map(path, name, artist_name, duration);
@@ -132,7 +126,6 @@ public class SongList extends AsyncTask<Void,Void,Void> {
     void add_song_in_map(String song_path, String name, String artist_name, int duration) {
         Song song = new Song(song_path, name, duration, artist_name, song_path, null);
         editor.putString(song.id, song.name + "$" + song.time_duration + "$" + song.artist_name + "$" + song.full_path + "$");
-//        Log.d(TAG,"Commited:"+sharedpreferences.getString(song.id,"NULL"));
-        editor.commit();
+        FirstPage._("Adding to shared preferences");
     }
 }

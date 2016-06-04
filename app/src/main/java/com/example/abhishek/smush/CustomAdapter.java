@@ -121,6 +121,7 @@ public class CustomAdapter extends BaseAdapter{
             holder.song_img.setImageResource(this.context.getResources().getIdentifier(image_name,"drawable",this.context.getPackageName()));
         else
             holder.song_img.setImageResource(R.drawable.nn);
+
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,20 +135,20 @@ public class CustomAdapter extends BaseAdapter{
 //                context.startActivity(playSong);
 
                 //Play the song
-                try {
-                    Log.d(TAG,"TRYing to play");
-                    MediaPlayer current_song = new MediaPlayer();
-                    current_song.setDataSource(song.full_path);
-                    current_song.prepare();
-                    current_song.start();
-                    Log.d(TAG,"Play started");
-                }
-                catch (IOException e) {
-                    FirstPage._("Error while playing the song");
-                    e.printStackTrace();
-                } catch (NullPointerException e) {
-                    FirstPage._("No songs to play");
-                }
+//                try {
+//                    Log.d(TAG,"TRYing to play");
+//                    MediaPlayer current_song = new MediaPlayer();
+//                    current_song.setDataSource(song.full_path);
+//                    current_song.prepare();
+//                    current_song.start();
+//                    Log.d(TAG,"Play started");
+//                }
+//                catch (IOException e) {
+//                    FirstPage._("Error while playing the song");
+//                    e.printStackTrace();
+//                } catch (NullPointerException e) {
+//                    FirstPage._("No songs to play");
+//                }
             }
         });
         return rowView;
