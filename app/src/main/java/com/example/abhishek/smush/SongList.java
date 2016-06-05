@@ -38,7 +38,11 @@ public class SongList extends AsyncTask<Void,Void,Void> {
 
         sharedpreferences = FirstPage.FIRST_PAGE_CONTEXT.getSharedPreferences(MY_PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
+
+        // the below line may not be needed for later usage so you can comment it ;)
         editor.clear(); // to clear previous song list
+
+
 /*        dialog = new ProgressDialog(FirstPage.FIRST_PAGE_CONTEXT);
         dialog.setMessage("Scanning files, please wait.");
         dialog.show();*/
@@ -107,7 +111,9 @@ public class SongList extends AsyncTask<Void,Void,Void> {
                 try {
 //                    name = metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_TITLE);
                     name = file.getName();
-                    artist_name = metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                    String artist = metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_ARTIST);
+                    if(artist!=null)
+                        artist_name = artist;
                     try {
                         duration = Integer.valueOf(metaRetriver.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION));
                     }catch (NumberFormatException e){

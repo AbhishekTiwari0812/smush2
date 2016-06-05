@@ -10,6 +10,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SongInfo">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSongNameInfo"
+        android:gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSongArtistInfo"
+        android:gravity="center_horizontal"
+        android:textSize="16sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textViewSongInfo"
+        android:paddingTop="5dp"
+        android:text="Song Priority"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"/>
 
     <ListView
         android:id="@+id/listViewDay"

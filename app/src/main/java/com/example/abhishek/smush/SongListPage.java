@@ -40,22 +40,22 @@ public class SongListPage  extends  AppCompatActivity {
             Song tmp_song;
             SONGS_IN_PHONE = new HashMap<String, Song>();
             //Creating temporary songs
-            tmp_song = new Song("11","Bolna",60,"Alia Bhatt","sudoroot/1",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("22","Dolna",120,"Rohit Bhatt","sudoroot/2",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("33","Kholna",100,"Zingya Bhatt","sudoroot/3",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("44","Colna",65,"Darshak Bhatt","sudoroot/4",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("55","Zolna",30,"Gautam Bhatt","sudoroot/5",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("66","Xolna",60,"Aliass Bhatt","sudoroot/6",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("77","Aolna",60,"Aliadas Bhatt","sudoroot/7",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
-            tmp_song = new Song("88","Holna",60,"Aliasdf Bhatt","sudoroot/8",new int[0]);
-            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("11","Bolna",60,"Alia Bhatt","sudoroot/1",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("22","Dolna",120,"Rohit Bhatt","sudoroot/2",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("33","Kholna",100,"Zingya Bhatt","sudoroot/3",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("44","Colna",65,"Darshak Bhatt","sudoroot/4",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("55","Zolna",30,"Gautam Bhatt","sudoroot/5",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("66","Xolna",60,"Aliass Bhatt","sudoroot/6",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("77","Aolna",60,"Aliadas Bhatt","sudoroot/7",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
+//            tmp_song = new Song("88","Holna",60,"Aliasdf Bhatt","sudoroot/8",new int[0]);
+//            SONGS_IN_PHONE.put(tmp_song.id,tmp_song);
 
         }
         else

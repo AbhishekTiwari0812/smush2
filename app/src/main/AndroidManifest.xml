@@ -21,7 +21,9 @@
         </activity>
         <activity android:name=".SongListPage"></activity>
         <activity android:name=".SongPage"></activity>
-        <activity android:name=".SongInfo"></activity>
+        <activity android:name=".SongInfo"
+            android:windowSoftInputMode="adjustPan"
+            ></activity>
 
         <service
             android:name=".SongPlayerService"

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <TextView
+        android:id="@+id/textViewDay"
+        android:paddingTop="12dp"
+        android:layout_width="50dp"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16sp">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <EditText
+                android:id="@+id/textViewPriority1"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+            <EditText
+                android:id="@+id/textViewPriority2"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+            <EditText
+                android:id="@+id/textViewPriority3"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+        <!--</LinearLayout>-->
+        <!--<LinearLayout-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="horizontal"-->
+            <!--&gt;-->
+
+            <EditText
+                android:id="@+id/textViewPriority4"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+            <EditText
+                android:id="@+id/textViewPriority5"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+            <EditText
+                android:id="@+id/textViewPriority6"
+                android:paddingTop="12dp"
+                android:maxLength="4"
+                android:inputType="number"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/priority_text_size" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

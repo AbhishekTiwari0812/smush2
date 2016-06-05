@@ -130,9 +130,9 @@ public class CustomAdapter extends BaseAdapter{
                 Toast.makeText(context, "You Clicked "+name, Toast.LENGTH_SHORT).show();
 
                 //Start your activity to play this song
-//                Intent playSong = new Intent(context,SongPage.class);
-//                playSong.putExtra("id",song.id);
-//                context.startActivity(playSong);
+                Intent songInfo = new Intent(context,SongInfo.class);
+                songInfo.putExtra("id",song.id);
+                context.startActivity(songInfo);
 
                 //Play the song
 //                try {
